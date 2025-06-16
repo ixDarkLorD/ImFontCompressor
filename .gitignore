@@ -1,0 +1,12 @@
+/build/
+/dist/
+*.spec
+*.egg-info
+
+__pycache__/
+
+.venv/
+venv/
+
+user_config.json
+imfont_compressor.exe.spec

@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "📦 Build Executable (PyInstaller)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/utils/build_exe.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "🚀 Run Debug",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "imfont_compressor.main",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "🚀 Run Executable Build",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/dist/imfont_compressor.exe",
+      "args": [],
+      "stopAtEntry": false
+    },
+    {
+      "name": "⬆️ Upload Executable to GitHub",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/utils/upload_release.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+      }
+    }
+  ]
+}

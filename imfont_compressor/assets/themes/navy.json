@@ -1,0 +1,78 @@
+{
+  "id": "navy",
+  "name": "Navy",
+  "author": "!D4RK",
+  "version": "1.0",
+  "description": "A calm navy blue themed color set",
+  "colors": {
+    "backgrounds": {
+      "bg_root": "#0b1d3a",
+      "bg_main_frame": "#122a5e",
+      "bg_child_frame": "#0d2242",
+      "separator": "#1a355f"
+    },
+    "text": {
+      "label": "#e0e6f2"
+    },
+    "inputs": {
+      "inputbox_bg": "#1c2b55",
+      "inputbox_fg": "#d9e1f2",
+      "inputbox_inside": "#7a8dbf",
+      "inputbox_border": "#25407c",
+      "inputbox_insert_cursor": "#a9c1ff",
+      "inputbox_border_focus": "#5599ff",
+      "inputbox_light_focus": "#5a8effff"
+    },
+    "buttons": {
+      "button_bg": "#1c2b55",
+      "button_fg": "#e0e6f2",
+      "button_hover_bg": "#2b3d7c",
+      "button_hover_fg": "#ffffff",
+      "button_pressed_bg": "#36529b",
+      "button_pressed_fg": "#cbd6ff",
+      "button_disabled_bg": "#122a5e",
+      "button_disabled_fg": "#7a8dbf",
+      "button_border": "#2f4a85"
+    },
+    "checkbox": {
+      "button_bg": "#0d2242",
+      "button_fg": "#e0e6f2",
+      "button_active_bg": "#122a5e",
+      "button_active_fg": "#d1dbf7",
+      "button_select_color": "#25407c"
+    },
+    "combobox": {
+      "combobox_field": "#1c2b55",
+      "combobox_bg": "#0b1d3a",
+      "combobox_fg": "#e0e6f2",
+      "combobox_foreground": "#d9e1f2",
+      "combobox_select_bg": "#36529b",
+      "combobox_select_fg": "#ffffff",
+      "combobox_arrow": "#e0e6f2",
+      "combobox_focus_highlight": "#5599ff",
+      "combobox_disabled_bg": "#122a5e",
+      "combobox_disabled_fg": "#7a8dbf",
+      "combobox_hover_bg": "#2b3d7c",
+      "combobox_hover_fg": "#ffffff",
+      "combobox_border": "#25407c"
+    },
+    "notebook": {
+      "notebook_bg": "#122a5e",
+      "notebook_tab_bg": "#0b1d3a",
+      "notebook_tab_fg": "#e0e6f2",
+      "notebook_tab_hover_bg": "#1c2b55",
+      "notebook_tab_hover_fg": "#ffffff",
+      "notebook_tab_selected_bg": "#25407c",
+      "notebook_tab_selected_fg": "#ffffff",
+      "notebook_tab_disabled_bg": "#122a5e",
+      "notebook_tab_disabled_fg": "#7a8dbf",
+      "notebook_tab_border": "#1a355f"
+    },
+    "status": {
+      "status_idle": "#d0d8f9",
+      "status_success": "#4caf50",
+      "status_warning": "#ffeb3b",
+      "status_error": "#f44336"
+    }
+  }
+}

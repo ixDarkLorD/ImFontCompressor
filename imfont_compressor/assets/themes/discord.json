@@ -1,0 +1,78 @@
+{
+  "id": "discord",
+  "name": "Discord",
+  "author": "!D4RK",
+  "version": "1.0",
+  "description": "Dark theme inspired by Discord app with violet highlights",
+  "colors": {
+    "backgrounds": {
+      "bg_root": "#2c2f33",
+      "bg_main_frame": "#23272a",
+      "bg_child_frame": "#2c2f33",
+      "separator": "#7289da"
+    },
+    "text": {
+      "label": "#ffffff"
+    },
+    "inputs": {
+      "inputbox_bg": "#2f3136",
+      "inputbox_fg": "#ffffff",
+      "inputbox_inside": "#99aab5",
+      "inputbox_border": "#99aab5",
+      "inputbox_insert_cursor": "#7289da",
+      "inputbox_border_focus": "#7289da",
+      "inputbox_light_focus": "#99aab5"
+    },
+    "buttons": {
+      "button_bg": "#23272a",
+      "button_fg": "#ffffff",
+      "button_hover_bg": "#7289da",
+      "button_hover_fg": "#ffffff",
+      "button_pressed_bg": "#5b6eae",
+      "button_pressed_fg": "#d6d9dc",
+      "button_disabled_bg": "#2f3136",
+      "button_disabled_fg": "#99aab5",
+      "button_border": "#7289da"
+    },
+    "checkbox": {
+      "button_bg": "#2c2f33",
+      "button_fg": "#ffffff",
+      "button_active_bg": "#7289da",
+      "button_active_fg": "#ffffff",
+      "button_select_color": "#7289da"
+    },
+    "combobox": {
+      "combobox_field": "#2f3136",
+      "combobox_fg": "#ffffff",
+      "combobox_bg": "#2c2f33",
+      "combobox_foreground": "#ffffff",
+      "combobox_select_bg": "#7289da",
+      "combobox_select_fg": "#ffffff",
+      "combobox_arrow": "#ffffff",
+      "combobox_focus_highlight": "#7289da",
+      "combobox_disabled_bg": "#2f3136",
+      "combobox_disabled_fg": "#99aab5",
+      "combobox_hover_bg": "#23272a",
+      "combobox_hover_fg": "#ffffff",
+      "combobox_border": "#7289da"
+    },
+    "notebook": {
+      "notebook_bg": "#23272a",
+      "notebook_tab_bg": "#2c2f33",
+      "notebook_tab_fg": "#ffffff",
+      "notebook_tab_hover_bg": "#7289da",
+      "notebook_tab_hover_fg": "#ffffff",
+      "notebook_tab_selected_bg": "#23272a",
+      "notebook_tab_selected_fg": "#ffffff",
+      "notebook_tab_disabled_bg": "#2f3136",
+      "notebook_tab_disabled_fg": "#99aab5",
+      "notebook_tab_border": "#7289da"
+    },
+    "status": {
+      "status_idle": "#ffffff",
+      "status_success": "#4caf50",
+      "status_warning": "#ffeb3b",
+      "status_error": "#f44336"
+    }
+  }
+}

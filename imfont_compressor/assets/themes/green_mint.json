@@ -1,0 +1,78 @@
+{
+  "id": "green_mint",
+  "name": "Green Mint",
+  "author": "!D4RK",
+  "version": "1.0",
+  "description": "Fresh green and minty pastel theme",
+  "colors": {
+    "backgrounds": {
+      "bg_root": "#e6f0ea",
+      "bg_main_frame": "#d0e2d8",
+      "bg_child_frame": "#e6f0ea",
+      "separator": "#a8c2b4"
+    },
+    "text": {
+      "label": "#2b3d2f"
+    },
+    "inputs": {
+      "inputbox_bg": "#c8e1d4",
+      "inputbox_fg": "#2b3d2f",
+      "inputbox_inside": "#7f9e87",
+      "inputbox_border": "#9ac3ab",
+      "inputbox_insert_cursor": "#005f2f",
+      "inputbox_border_focus": "#32b372",
+      "inputbox_light_focus": "#67d29b"
+    },
+    "buttons": {
+      "button_bg": "#a3c9a8",
+      "button_fg": "#2b3d2f",
+      "button_hover_bg": "#82b887",
+      "button_hover_fg": "#ffffff",
+      "button_pressed_bg": "#6ba170",
+      "button_pressed_fg": "#e6f0ea",
+      "button_disabled_bg": "#c8e1d4",
+      "button_disabled_fg": "#7f9e87",
+      "button_border": "#87b57f"
+    },
+    "checkbox": {
+      "button_bg": "#e6f0ea",
+      "button_fg": "#2b3d2f",
+      "button_active_bg": "#c8e1d4",
+      "button_active_fg": "#2b3d2f",
+      "button_select_color": "#9ac3ab"
+    },
+    "combobox": {
+      "combobox_field": "#c8e1d4",
+      "combobox_fg": "#2b3d2f",
+      "combobox_bg": "#e6f0ea",
+      "combobox_foreground": "#2b3d2f",
+      "combobox_select_bg": "#82b887",
+      "combobox_select_fg": "#ffffff",
+      "combobox_arrow": "#2b3d2f",
+      "combobox_focus_highlight": "#32b372",
+      "combobox_disabled_bg": "#c8e1d4",
+      "combobox_disabled_fg": "#7f9e87",
+      "combobox_hover_bg": "#a3c9a8",
+      "combobox_hover_fg": "#ffffff",
+      "combobox_border": "#87b57f"
+    },
+    "notebook": {
+      "notebook_bg": "#d0e2d8",
+      "notebook_tab_bg": "#a3c9a8",
+      "notebook_tab_fg": "#2b3d2f",
+      "notebook_tab_hover_bg": "#82b887",
+      "notebook_tab_hover_fg": "#ffffff",
+      "notebook_tab_selected_bg": "#e6f0ea",
+      "notebook_tab_selected_fg": "#2b3d2f",
+      "notebook_tab_disabled_bg": "#c8e1d4",
+      "notebook_tab_disabled_fg": "#7f9e87",
+      "notebook_tab_border": "#9ac3ab"
+    },
+    "status": {
+      "status_idle": "#2b3d2f",
+      "status_success": "#4caf50",
+      "status_warning": "#ffeb3b",
+      "status_error": "#f44336"
+    }
+  }
+}

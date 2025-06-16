@@ -1,0 +1,4 @@
+pyinstaller
+pillow
+tkinterdnd2
+requests

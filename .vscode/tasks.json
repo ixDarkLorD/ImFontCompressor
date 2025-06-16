@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🛠️ Build Compressor",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-O2",
+        "-o",
+        "${workspaceFolder}/data/binary_to_compressed_c.exe",
+        "${workspaceFolder}/data/binary_to_compressed_c.cpp",
+        "-lz"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Compile 'binary_to_compressed_c.cpp' into a standalone compressor executable"
+    },
+    {
+      "label": "⚙️ Setup Project",
+      "type": "shell",
+      "command": "python",
+      "args": ["setup.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Run initial project setup. Use this only once after cloning or cleaning."
+    }
+  ]
+}
