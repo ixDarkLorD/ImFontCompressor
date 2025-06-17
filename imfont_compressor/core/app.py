@@ -11,9 +11,15 @@ class ImFontCompressorApp:
         self.ui_theme = UITheme(self)
 
         self.root = None
-        self._init_widget_references()
         self.last_output_text = None
         self.last_output_file = None
+
+        self._create_root_window()
+        self._init_widget_references()
+        self._init_theme_settings()
+        
+        from imfont_compressor.core.config import load_config
+        load_config(self, True)
 
     def _init_widget_references(self):
         self.font_input = None
@@ -52,7 +58,7 @@ class ImFontCompressorApp:
         set
 
     def _create_splash_screen(self):
-        self.splash = tk.Toplevel(self.root)
+        self.splash = tk.Toplevel(self.root, bd=8, relief="ridge")
         self.splash.overrideredirect(True)
         self.splash.configure(bg=self.ui_theme.get_color(ColorKeys.BG_MAIN_FRAME))
 
@@ -67,7 +73,7 @@ class ImFontCompressorApp:
         try:
             from PIL import Image, ImageTk
             image = Image.open(get_resource_path("assets/logo.png"))
-            image = image.resize((80, 80))  # Resize for splash
+            image = image.resize((80, 80))
             self.splash_img = ImageTk.PhotoImage(image)
             image_label = tk.Label(self.splash, image=self.splash_img, bg=self.ui_theme.get_color(ColorKeys.BG_MAIN_FRAME), borderwidth=0)
             image_label.pack(pady=(20, 10))
@@ -101,22 +107,18 @@ class ImFontCompressorApp:
         self.splash.update()
 
     def setup_gui(self):
-        from imfont_compressor.core.config import load_config
-
-        load_config(self, True)
-        self._create_root_window()
         self._create_splash_screen()
 
-        self.root.after(100, lambda: self._continue_gui_setup(load_config))
+        self.root.after(100, lambda: self._continue_gui_setup())
         self.root.mainloop()
 
-    def _continue_gui_setup(self, load_config):
+    def _continue_gui_setup(self):
         self._init_theme_settings()
-        load_config(self, True)
 
         from imfont_compressor.gui.main_window import MainWindow
         self.main_window = MainWindow(self)
 
+        from imfont_compressor.core.config import load_config
         load_config(self)
 
         self.root.after(800, self._finalize_gui_setup)
@@ -152,7 +154,15 @@ class ImFontCompressorApp:
 
     def _animate_loading_text(self):
         dots = "." * (self._loading_dot_count % 4)
-        self.loading_label.config(text=f"{self.language.get("ui.loading")}{dots}")
+
+        from imfont_compressor.core.language import TextAlignment
+        align = self.language.get_alignment()
+        if align == TextAlignment.LTR:
+            text = f"{self.language.get("ui.loading")}{dots}" 
+        else:
+            text = f"{dots}{self.language.get("ui.loading")}"
+
+        self.loading_label.config(text=text)
         self._loading_dot_count += 1
         self.splash.after(500, self._animate_loading_text)
 

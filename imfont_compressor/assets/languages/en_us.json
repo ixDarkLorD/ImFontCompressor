@@ -1,5 +1,6 @@
 {
   "name": "English",
+  "alignment": "ltr",
   "translations": {
     "ui.title": "ImFont Compressor",
     "ui.loading": "Loading",
@@ -22,8 +23,8 @@
     "main.status.invalid_drop": "Dropped item is not a file.",
     "main.status.compressing": "Compressing...",
     "main.status.compressed": "Compression succeeded!",
-    "options.label.language": "Language",
-    "options.label.theme": "Theme",
+    "options.label.language": "Language:",
+    "options.label.theme": "Theme:",
     "options.label.build": "Build: %s",
     "options.label.credits": "Credits: %s",
     "options.button.discord": "Join Discord",

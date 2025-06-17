@@ -13,7 +13,7 @@ def create_separator_row(app, parent_frame, row_index: int):
     
     return separator
 
-def create_rounded_frame(parent, width=200, height=100, radius=15, bg="#333333"):
+def create_rounded_frame(parent, width=200, height=100, radius=15, bg="#FFFFFF"):
     canvas = tk.Canvas(parent, width=width, height=height, bg=parent["bg"], highlightthickness=0)
     canvas.pack()
 

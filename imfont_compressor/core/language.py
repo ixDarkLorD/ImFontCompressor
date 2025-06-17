@@ -1,7 +1,26 @@
 import os
 import json
+from enum import Enum
 from collections import Counter
 from imfont_compressor.core.utils import get_resource_path
+
+class TextAlignment(Enum):
+    LTR = "ltr"
+    RTL = "rtl"
+
+    @staticmethod
+    def from_string(value: str):
+        if not value:
+            return TextAlignment.LTR
+        value = value.strip().lower()
+        return TextAlignment.RTL if value == "rtl" else TextAlignment.LTR
+
+    def to_justify(self) -> str:
+        return "left" if self == TextAlignment.LTR else "right"
+
+    def to_anchor(self) -> str:
+        return "w" if self == TextAlignment.LTR else "e"
+
 
 class Component:
     def __init__(self, key: str, value: str):
@@ -25,6 +44,7 @@ class Component:
             print(f"[Component] Formatting error for key '{self.key}': {e}")
             return self
 
+
 class Language:
     def __init__(self, app, lang_code="en_us", localization_dir=None):
         self.app = app
@@ -32,9 +52,10 @@ class Language:
         self.localization_dir = localization_dir or get_resource_path("assets", "languages")
         self.translations = {}
         self.language_name = ""
-        self.load_language(self.lang_code)
+        self.alignment = TextAlignment.LTR
+        self.load_language(self.lang_code, True)
 
-    def load_language(self, lang_code):
+    def load_language(self, lang_code, ignore=False):
         path = os.path.join(self.localization_dir, f"{lang_code}.json")
         if not os.path.isfile(path):
             raise FileNotFoundError(f"[Localization] Language file not found: {path}")
@@ -49,12 +70,16 @@ class Language:
 
             self.language_name = data.get("name", lang_code)
             self.translations = data.get("translations", {})
-            print(f"[Localization] Loaded language: {self.language_name} ({lang_code})")
+            self.alignment = TextAlignment.from_string(data.get("alignment", "ltr"))
+
+            if not ignore:
+                print(f"[Localization] Loaded language: {self.language_name} ({lang_code})")
 
         except Exception as e:
             print(f"[Localization] Failed to load language file: {e}")
             self.translations = {}
             self.language_name = ""
+            self.alignment = TextAlignment.LTR
 
     def get(self, key: str, *args) -> Component:
         if not isinstance(key, str):
@@ -80,9 +105,9 @@ class Language:
 
         return Component(key, raw_value)
 
-    def set_language(self, lang_code):
+    def set_language(self, lang_code, ignore=False):
         self.lang_code = lang_code
-        self.load_language(lang_code)
+        self.load_language(lang_code, ignore)
 
     def get_available_languages(self):
         langs = []
@@ -103,24 +128,27 @@ class Language:
     def get_language_name(self):
         return self.language_name
 
-# Utils
+    def get_alignment(self) -> TextAlignment:
+        return self.alignment
 
+
+# Utility to check duplicate keys inside "translations"
 def check_duplicate_keys(file_path):
-        with open(file_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+    with open(file_path, "r", encoding="utf-8") as f:
+        lines = f.readlines()
 
-        keys = []
-        inside_translations = False
-        for line in lines:
-            stripped = line.strip()
-            if stripped.startswith('"translations"'):
-                inside_translations = True
-            elif inside_translations and stripped.startswith('}'):
-                break
-            elif inside_translations and ":" in stripped:
-                key_part = stripped.split(":", 1)[0].strip()
-                if key_part.startswith('"') and key_part.endswith('"'):
-                    keys.append(key_part.strip('"'))
+    keys = []
+    inside_translations = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('"translations"'):
+            inside_translations = True
+        elif inside_translations and stripped.startswith('}'):
+            break
+        elif inside_translations and ":" in stripped:
+            key_part = stripped.split(":", 1)[0].strip()
+            if key_part.startswith('"') and key_part.endswith('"'):
+                keys.append(key_part.strip('"'))
 
-        duplicates = [key for key, count in Counter(keys).items() if count > 1]
-        return duplicates
+    duplicates = [key for key, count in Counter(keys).items() if count > 1]
+    return duplicates

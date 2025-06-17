@@ -1,14 +1,14 @@
+import json
 import tkinter as tk
 from tkinter import messagebox, filedialog
-from imfont_compressor.core.utils import encoding_map, get_encoding_value
-from imfont_compressor.core.config import save_config
-from imfont_compressor.core.ui_theme import ColorKeys
-from imfont_compressor.core.app import ImFontCompressorApp
 import webbrowser
 import threading
 import urllib.request
+from imfont_compressor.core.config import save_config
+from imfont_compressor.core.ui_theme import ColorKeys
+from imfont_compressor.core.app import ImFontCompressorApp
+from imfont_compressor.core.utils import encoding_map, get_encoding_value
 from imfont_compressor import CURRENT_VERSION, DISCORD_URL, RELEASE_API, GITHUB_URL
-import json
 
 def on_theme_changed(app: ImFontCompressorApp):
     themes = app.ui_theme.list_available_themes()
@@ -45,18 +45,19 @@ def on_theme_changed(app: ImFontCompressorApp):
 
 def on_language_changed(app: ImFontCompressorApp):
     selected_name = app.language_combo.get()
-    current_name = app.language.get_language_name()
 
-    if selected_name == current_name:
-        return  # No change, so do nothing
-
-    # Find and set the new language
+    selected_code = None
     for code, name in app.language.get_available_languages():
         if name == selected_name:
-            app.language.set_language(code)
+            selected_code = code
             break
 
-    # Notify user that a restart is required
+    if selected_code is None or selected_code == app.language.lang_code:
+        return
+
+    app.language.set_language(selected_code, True)
+    save_config(app)
+
     messagebox.showinfo(
         title=app.language.get("options.message.restart"),
         message=app.language.get("options.message.restart.language")

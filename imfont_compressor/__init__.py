@@ -1,6 +1,6 @@
 from .main import run_app
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __all__ = ["run_app"]
 
 AUTHOR = "!D4RK"

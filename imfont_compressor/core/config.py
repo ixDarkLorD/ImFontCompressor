@@ -1,11 +1,14 @@
 import json
 import os
-from imfont_compressor.core.app import ImFontCompressorApp
+from typing import TYPE_CHECKING
 from imfont_compressor.core.utils import get_encoding_key, get_valid_symbol_name
+
+if TYPE_CHECKING:
+    from imfont_compressor.core.app import ImFontCompressorApp  # Only used for type hints
 
 CONFIG_FILE = "user_config.json"
 
-def save_config(app: ImFontCompressorApp):
+def save_config(app: "ImFontCompressorApp"):
     prefs = {
         "lang": app.language.lang_code,
         "theme": app.ui_theme.theme_name,
@@ -21,7 +24,7 @@ def save_config(app: ImFontCompressorApp):
     except Exception as e:
         print(f"Failed to save preferences: {e}")
 
-def load_config(app: ImFontCompressorApp, ignore=False):
+def load_config(app: "ImFontCompressorApp", ignore=False):
     if os.path.isfile(CONFIG_FILE):
         try:
             with open(CONFIG_FILE, "r") as f:
@@ -30,7 +33,7 @@ def load_config(app: ImFontCompressorApp, ignore=False):
             # Load language before anything UI-related
             lang_code = prefs.get("lang")
             if lang_code:
-                app.language.set_language(lang_code)
+                app.language.set_language(lang_code, ignore)
 
             # Load theme
             theme_name = prefs.get("theme", "")
