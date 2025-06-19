@@ -13,7 +13,8 @@ All notable changes to this project will be documented in this file.
 - Tab bar dynamically aligns to the right for RTL languages.
 - Simplified layout by removing redundant frames.
 - Cleaned up startup configuration and resource handling.
-- Updated theme application to more UI elements (labels, frames, outputs).
+- Updated theme application to more UI elements (Frames, Tabs).
+- Missing translation keys now default to English.
 
 ### Fixed
 
