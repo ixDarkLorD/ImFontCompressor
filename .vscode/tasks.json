@@ -1,6 +1,113 @@
 {
   "version": "2.0.0",
   "tasks": [
+    // ===== SETUP TASKS =====
+    {
+      "label": "⚙️ Setup",
+      "type": "shell",
+      "command": "python",
+      "args": ["setup.py", "--install"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Complete environment setup with dependencies"
+    },
+    {
+      "label": "♻️ Force Setup",
+      "type": "shell",
+      "command": "python",
+      "args": ["setup.py", "--force"],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Performs a full environment reset and reinstall. Use this if you encounter setup issues or need a clean slate."
+    },
+
+    // ===== BUILD/RELEASE TASKS =====
+    {
+      "label": "📦 Build",
+      "type": "shell",
+      "command": "python",
+      "args": ["${workspaceFolder}/utils/build_exe.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Create standalone executable Shortcut: ()"
+    },
+    {
+      "label": "🚀 Upload",
+      "type": "shell",
+      "command": "python",
+      "args": ["${workspaceFolder}/utils/upload_release.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "problemMatcher": [],
+      "detail": "Upload latest build to GitHub Releases",
+      "options": {
+        "env": {
+          "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+        }
+      }
+    },
+    {
+      "label": "📦/🚀 Build & Upload",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/utils/build_exe.py",
+        "&&",
+        "python",
+        "${workspaceFolder}/utils/upload_release.py"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "problemMatcher": [],
+      "detail": "Runs the full pipeline: builds the application and uploads it (Shortcut: Ctrl+Shift+T)",
+      "options": {
+        "env": {
+          "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+        }
+      }
+    },
+
+    // ===== MAINTENANCE =====
+    {
+      "label": "🌱 Debug Bootstrap",
+      "type": "shell",
+      "command": "python",
+      "args": ["setup.py"],
+      "group": "none",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      },
+      "problemMatcher": [],
+      "detail": "Verify Python version, dependencies, and environment before debugging"
+    },
     {
       "label": "🛠️ Build Compressor",
       "type": "shell",
@@ -17,27 +124,10 @@
       ],
       "group": {
         "kind": "build",
-        "isDefault": true
+        "isDefault": false
       },
       "problemMatcher": ["$gcc"],
       "detail": "Compile 'binary_to_compressed_c.cpp' into a standalone compressor executable"
-    },
-    {
-      "label": "⚙️ Setup Project",
-      "type": "shell",
-      "command": "python",
-      "args": ["setup.py"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
-      "problemMatcher": [],
-      "detail": "Run initial project setup. Use this only once after cloning or cleaning."
     }
   ]
 }
