@@ -58,7 +58,7 @@ Download ready-to-use executables from our [Releases page](https://github.com/ix
 
 ## ⚙️ Development
 
-<div align="center" style="margin: 10px 0"> <img src="https://img.shields.io/badge/Python-3.13+-3776AB?logo=python&logoColor=white" alt="Python"> <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/IDE-VSCode-007ACC?logo=visual-studio-code&logoColor=white" alt="VSCode"> </div>
+<div align="left" style="margin: 0px 0"> <img src="https://img.shields.io/badge/Python-3.13+-3776AB?logo=python&logoColor=white" alt="Python"> <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/IDE-VSCode-007ACC?logo=visual-studio-code&logoColor=white" alt="VSCode"> </div>
 
 ### 📋 Prerequisites
 
