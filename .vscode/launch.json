@@ -6,7 +6,7 @@
       "type": "debugpy",
       "request": "launch",
       "module": "imfont_compressor.main",
-      "preLaunchTask": "⚙️ Basic Setup",
+      "preLaunchTask": "🌱 Debug Bootstrap",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     }
