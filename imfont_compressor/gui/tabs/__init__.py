@@ -1,4 +1,4 @@
-from .main_tab import MainTab
+from .compressor_tab import CompressorTab
 from .options_tab import OptionsTab
 
-__all__ = ['MainTab', 'OptionsTab']
+__all__ = ['CompressorTab', 'OptionsTab']

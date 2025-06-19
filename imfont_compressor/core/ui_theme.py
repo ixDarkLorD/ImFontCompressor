@@ -56,19 +56,19 @@ class ColorKeys(Enum):
     COMBO_HOVER_FG = "combobox.combobox_hover_fg"           # Text on hover
     COMBO_BORDER = "combobox.combobox_border"               # Combobox border color
 
-    # === Notebook (Tabs) ===
-    NOTEBOOK_BG = "notebook.notebook_bg"                    # Notebook container background
-    TAB_BG = "notebook.notebook_tab_bg"                     # Tab background (default)
-    TAB_FG = "notebook.notebook_tab_fg"                     # Tab text (default)
-    TAB_HOVER_BG = "notebook.notebook_tab_hover_bg"         # Background on hover
-    TAB_HOVER_FG = "notebook.notebook_tab_hover_fg"         # Text on hover
-    TAB_SELECTED_BG = "notebook.notebook_tab_selected_bg"   # Background of selected tab
-    TAB_SELECTED_FG = "notebook.notebook_tab_selected_fg"   # Text of selected tab
-    TAB_DISABLED_BG = "notebook.notebook_tab_disabled_bg"   # Background when disabled
-    TAB_DISABLED_FG = "notebook.notebook_tab_disabled_fg"   # Text when disabled
-    TAB_BORDER = "notebook.notebook_tab_border"             # Tab border color (default)
-    TAB_SELECTED_BORDER = "notebook.notebook_tab_selected_border"  # Border of selected tab
-    TAB_HOVER_BORDER = "notebook.notebook_tab_hover_border"        # Border on hover
+    # === Tabs ===
+    TAB_CONTAINER_BG = "tab_container.bg"                    # Tab Container background
+    TAB_BG = "tab_container.tab_bg"                     # Tab background (default)
+    TAB_FG = "tab_container.tab_fg"                     # Tab text (default)
+    TAB_HOVER_BG = "tab_container.tab_hover_bg"         # Background on hover
+    TAB_HOVER_FG = "tab_container.tab_hover_fg"         # Text on hover
+    TAB_SELECTED_BG = "tab_container.tab_selected_bg"   # Background of selected tab
+    TAB_SELECTED_FG = "tab_container.tab_selected_fg"   # Text of selected tab
+    TAB_DISABLED_BG = "tab_container.tab_disabled_bg"   # Background when disabled
+    TAB_DISABLED_FG = "tab_container.tab_disabled_fg"   # Text when disabled
+    TAB_BORDER = "tab_container.tab_border"             # Tab border color (default)
+    TAB_SELECTED_BORDER = "tab_container.tab_selected_border"  # Border of selected tab
+    TAB_HOVER_BORDER = "tab_container.tab_hover_border"        # Border on hover
 
     # === Status Colors ===
     STATUS_IDLE = "status.status_idle"                      # Neutral/idle status
@@ -154,13 +154,13 @@ class UITheme:
                 items[full_key] = value
         return items
 
-    def set_theme_color(self, widget, **theme_options: ColorKeys):
+    def apply_colors(self, widget, **theme_options: ColorKeys):
         """
         Apply and store theming information for a widget using keyword args.
         Supports both normal and 'disabled_' prefixed options for disabled state.
 
         Example:
-            set_theme_color(widget,
+            apply_colors(widget,
                 bg=ColorKeys.BUTTON_BG,
                 fg=ColorKeys.BUTTON_FG,
                 disabled_bg=ColorKeys.BUTTON_DISABLED_BG,
@@ -336,6 +336,9 @@ class UITheme:
 
         if not self.app.initialized:
             return
+        
+        if self.app.main_window is not None:
+            self.app.main_window.refresh_colors()
 
         def get_color(key: ColorKeys) -> str:
             if not isinstance(key, ColorKeys):
@@ -468,32 +471,11 @@ class UITheme:
                     elif isinstance(widget, ttk.Notebook):
                         style.theme_use("default")
                         style.configure("Custom.TNotebook",
-                                        background=get_color(ColorKeys.NOTEBOOK_BG),
-                                        borderwidth=0)
+                                        background=get_color(ColorKeys.TAB_CONTAINER_BG),
+                                        borderwidth=0,
+                                        padding=0)
 
-                        style.configure("Custom.TNotebook.Tab",
-                                        background=get_color(ColorKeys.TAB_BG),
-                                        foreground=get_color(ColorKeys.TAB_FG),
-                                        padding=[8, 4],
-                                        borderwidth=2)
-
-                        style.map("Custom.TNotebook.Tab",
-                            background=[
-                                ("selected", get_color(ColorKeys.TAB_SELECTED_BG)),
-                                ("active", get_color(ColorKeys.TAB_HOVER_BG)),
-                                ("!selected", get_color(ColorKeys.TAB_BG)),
-                            ],
-                            foreground=[
-                                ("selected", get_color(ColorKeys.TAB_SELECTED_FG)),
-                                ("active", get_color(ColorKeys.TAB_FG)),
-                                ("!selected", get_color(ColorKeys.TAB_FG)),
-                            ],
-                            bordercolor=[
-                                ("selected", get_color(ColorKeys.TAB_SELECTED_BORDER)),
-                                ("active", get_color(ColorKeys.TAB_HOVER_BORDER)),
-                                ("!selected", get_color(ColorKeys.TAB_BORDER))
-                            ])
-
+                        style.layout("Custom.TNotebook.Tab", [])
                         widget.configure(style="Custom.TNotebook")
 
                     elif isinstance(widget, ttk.Entry):
@@ -506,7 +488,7 @@ class UITheme:
                         style.map("Custom.TEntry",
                                 fieldbackground=[
                                     ("disabled", get_color(ColorKeys.BUTTON_DISABLED_BG)),
-                                    ("focus", get_color(ColorKeys.INPUT_LIGHT_FOCUS)),
+                                    ("focus", get_color(ColorKeys.INPUT_BG)),
                                     ("!disabled", get_color(ColorKeys.INPUT_BG))
                                 ],
                                 foreground=[

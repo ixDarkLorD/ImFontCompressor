@@ -10,7 +10,7 @@ def styled_button(app, parent, text, command, **kwargs):
         **kwargs
     )
 
-    app.ui_theme.set_theme_color(btn, 
+    app.ui_theme.apply_colors(btn, 
         bg=ColorKeys.BUTTON_BG,
         fg=ColorKeys.BUTTON_FG,
         disabled_bg=ColorKeys.BUTTON_DISABLED_BG,

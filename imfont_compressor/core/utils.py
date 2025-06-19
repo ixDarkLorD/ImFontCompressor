@@ -76,13 +76,13 @@ def enable_drag_and_drop(widget, app):
                     app.font_input.insert(0, dropped_file)
                 # Update status_label
                 if app.status_label:
-                    app.status_label.config(text=app.language.get("main.status").format(app.language.get("main.status.idle")), fg=app.ui_theme.get_color(ColorKeys.STATUS_IDLE))
+                    app.status_label.config(text=app.language.get("compressor.status", app.language.get("compressor.status.idle")), fg=app.ui_theme.get_color(ColorKeys.STATUS_IDLE))
             else:
                 if app.status_label:
-                    app.status_label.config(text=app.language.get("main.status").format(app.language.get("main.status.invalid_type_drop")), fg=app.ui_theme.get_color(ColorKeys.STATUS_ERROR))
+                    app.status_label.config(text=app.language.get("compressor.status", app.language.get("compressor.status.invalid_type_drop")), fg=app.ui_theme.get_color(ColorKeys.STATUS_ERROR))
         else:
             if app.status_label:
-                app.status_label.config(text=app.language.get("main.status").format(app.language.get("main.status.invalid_drop")), fg=app.ui_theme.get_color(ColorKeys.STATUS_ERROR))
+                app.status_label.config(text=app.language.get("compressor.status", app.language.get("compressor.status.invalid_drop")), fg=app.ui_theme.get_color(ColorKeys.STATUS_ERROR))
 
     widget.drop_target_register(DND_FILES)
     widget.dnd_bind('<<Drop>>', on_drop)

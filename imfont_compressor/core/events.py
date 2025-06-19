@@ -4,6 +4,7 @@ from tkinter import messagebox, filedialog
 import webbrowser
 import threading
 import urllib.request
+import re
 from imfont_compressor.core.config import save_config
 from imfont_compressor.core.ui_theme import ColorKeys
 from imfont_compressor.core.app import ImFontCompressorApp
@@ -69,7 +70,7 @@ def browse_font(app: ImFontCompressorApp):
         app.font_input.delete(0, tk.END)
         app.font_input.insert(0, file)
         app.status_label.config(
-            text=app.language.get("main.status").format(app.language.get("main.status.idle")), 
+            text=app.language.get("compressor.status", app.language.get("compressor.status.idle")), 
             fg=app.ui_theme.get_color(ColorKeys.STATUS_IDLE)
         )
 
@@ -81,7 +82,7 @@ def on_option_changed(app: ImFontCompressorApp):
     app.btn_copy.config(state="disabled")
     app.btn_save.config(state="disabled")
     app.status_label.config(
-        text=app.language.get("main.status").format(app.language.get("main.status.idle")), 
+        text=app.language.get("compressor.status", app.language.get("compressor.status.idle")), 
         fg=app.ui_theme.get_color(ColorKeys.STATUS_IDLE)
     )
 
@@ -101,7 +102,7 @@ def compress_font(app: ImFontCompressorApp):
         app.status_label.config(text=text, fg=fg)
         app.root.update_idletasks()
 
-    status_set(app.language.get("main.status", app.language.get("main.status.compressing")), app.ui_theme.get_color(ColorKeys.STATUS_WARNING))
+    status_set(app.language.get("compressor.status", app.language.get("compressor.status.compressing")), app.ui_theme.get_color(ColorKeys.STATUS_WARNING))
 
     result = run_compression(params, status_set)
 
@@ -112,7 +113,7 @@ def compress_font(app: ImFontCompressorApp):
         app.btn_copy.config(state="normal")
         app.btn_save.config(state="normal")
 
-        status_set(app.language.get("main.status", app.language.get("main.status.compressed")), app.ui_theme.get_color(ColorKeys.STATUS_SUCCESS))
+        status_set(app.language.get("compressor.status", app.language.get("compressor.status.compressed")), app.ui_theme.get_color(ColorKeys.STATUS_SUCCESS))
         app.ui_theme.refresh_colors()
         save_config(app)
     else:
@@ -123,8 +124,8 @@ def copy_result(app: ImFontCompressorApp):
         app.root.clipboard_clear()
         app.root.clipboard_append(app.last_output_text)
         messagebox.showinfo(
-            app.language.get("main.message.copy"),
-            app.language.get("main.message.copy_compressed_font")
+            app.language.get("compressor.message.copy"),
+            app.language.get("compressor.message.copy_compressed_font")
         )
 
 def save_result(app: ImFontCompressorApp):
@@ -136,8 +137,8 @@ def save_result(app: ImFontCompressorApp):
             f.write(app.last_output_text)
             f.close()
             messagebox.showinfo(
-                app.language.get("main.message.save"), 
-                app.language.get("main.message.save_compressed_font", f.name)
+                app.language.get("compressor.message.save"), 
+                app.language.get("compressor.message.save_compressed_font", f.name)
             )
 
 def reset_to_defaults(app: ImFontCompressorApp):
@@ -149,7 +150,7 @@ def reset_to_defaults(app: ImFontCompressorApp):
     app.symbol_name_input.delete(0, tk.END)
     app.symbol_name_input.insert(0, "example")
     app.status_label.config(
-        text=app.language.get("main.status").format(app.language.get("main.status.reset")), 
+        text=app.language.get("compressor.status", app.language.get("compressor.status.reset")), 
         fg=app.ui_theme.get_color(ColorKeys.STATUS_SUCCESS)
     )
     save_config(app)
@@ -172,16 +173,45 @@ def open_github(app: ImFontCompressorApp):
             app.language.get("options.message.error.opening_github", e)
         )
 
+def compare_versions(v1, v2):
+    def parse_version(version):
+        return [int(num) for num in re.sub(r'[^0-9.]', '', version).split('.')]
+    
+    v1_parts = parse_version(v1)
+    v2_parts = parse_version(v2)
+    
+    for i in range(max(len(v1_parts), len(v2_parts))):
+        v1_part = v1_parts[i] if i < len(v1_parts) else 0
+        v2_part = v2_parts[i] if i < len(v2_parts) else 0
+        
+        if v1_part < v2_part:
+            return -1
+        elif v1_part > v2_part:
+            return 1
+    
+    return 0
+
 def get_update_status():
-    with urllib.request.urlopen(RELEASE_API + "/latest") as response:
-        data = json.load(response)
-        latest_version = data["tag_name"].lstrip("v")
-        download_url = data["html_url"]
-        is_update = latest_version != CURRENT_VERSION
+    try:
+        with urllib.request.urlopen(RELEASE_API + "/latest") as response:
+            data = json.load(response)
+            latest_version = data["tag_name"].lstrip("v")
+            download_url = data["html_url"]
+            
+            comparison = compare_versions(CURRENT_VERSION, latest_version)
+            is_update = comparison < 0
+            
+            return {
+                "is_update": is_update,
+                "latest_version": latest_version,
+                "download_url": download_url
+            }
+    except Exception as e:
+        print(f"Error checking for updates: {str(e)}")
         return {
-            "is_update": is_update,
-            "latest_version": latest_version,
-            "download_url": download_url
+            "is_update": False,
+            "latest_version": "",
+            "download_url": ""
         }
 
 def get_update_message(app: ImFontCompressorApp, status):
@@ -195,19 +225,39 @@ def get_update_message(app: ImFontCompressorApp, status):
 def check_and_notify_update(app: ImFontCompressorApp):
     def _check():
         try:
+            app.update_btn.configure(state="disabled")
             status = get_update_status()
-            title, message, is_update = get_update_message(status)
-
+            title, message, is_update = get_update_message(app, status)
+        
             if is_update:
                 if messagebox.askyesno(title, message):
                     webbrowser.open(status["download_url"])
             else:
                 messagebox.showinfo(title, message)
 
+            app.update_btn.configure(state="normal")
+
         except Exception as e:
+            app.update_btn.configure(state="normal")
             messagebox.showerror(
                 app.language.get("message.error"), 
                 app.language.get("options.message.error.check_for_updates", str(e))
             )
 
     threading.Thread(target=_check, daemon=True).start()
+
+def parse_version(version):
+    main, *pre = re.sub(r'[^0-9A-Za-z.-]', '', version).split('-', 1)
+    parts = [int(num) for num in main.split('.')]
+    
+    pre_num = 0
+    if pre:
+        pre_str = pre[0].lower()
+        if 'beta' in pre_str:
+            pre_num = 1
+        elif 'alpha' in pre_str:
+            pre_num = 2
+        elif 'rc' in pre_str:
+            pre_num = 3
+    
+    return parts + [pre_num]

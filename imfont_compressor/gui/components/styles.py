@@ -8,7 +8,7 @@ def create_separator_row(app, parent_frame, row_index: int):
     separator = tk.Frame(parent_frame, height=2)
     separator.grid(row=row_index, column=0, padx=app.pad_x, pady=(app.pad_y, 0), sticky="ew")
 
-    app.ui_theme.set_theme_color(separator, bg=ColorKeys.SEPARATOR)
+    app.ui_theme.apply_colors(separator, bg=ColorKeys.SEPARATOR)
     app.ui_theme.refresh_colors()
     
     return separator
@@ -39,7 +39,7 @@ def configure_checkbuttons(app, parent, options):
             command=lambda: events.on_option_changed(app)
         )
 
-        app.ui_theme.set_theme_color(cb, 
+        app.ui_theme.apply_colors(cb, 
            bg=ColorKeys.CHECK_BG,                       
            fg=ColorKeys.CHECK_FG,                     
            activebackground=ColorKeys.CHECK_ACTIVE_BG,                       

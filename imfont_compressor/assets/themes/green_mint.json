@@ -56,17 +56,17 @@
       "combobox_hover_fg": "#ffffff",
       "combobox_border": "#87b57f"
     },
-    "notebook": {
-      "notebook_bg": "#d0e2d8",
-      "notebook_tab_bg": "#a3c9a8",
-      "notebook_tab_fg": "#2b3d2f",
-      "notebook_tab_hover_bg": "#82b887",
-      "notebook_tab_hover_fg": "#ffffff",
-      "notebook_tab_selected_bg": "#e6f0ea",
-      "notebook_tab_selected_fg": "#2b3d2f",
-      "notebook_tab_disabled_bg": "#c8e1d4",
-      "notebook_tab_disabled_fg": "#7f9e87",
-      "notebook_tab_border": "#9ac3ab"
+    "tab_container": {
+      "bg": "#d0e2d8",
+      "tab_bg": "#a3c9a8",
+      "tab_fg": "#2b3d2f",
+      "tab_hover_bg": "#82b887",
+      "tab_hover_fg": "#ffffff",
+      "tab_selected_bg": "#e6f0ea",
+      "tab_selected_fg": "#2b3d2f",
+      "tab_disabled_bg": "#c8e1d4",
+      "tab_disabled_fg": "#7f9e87",
+      "tab_border": "#9ac3ab"
     },
     "status": {
       "status_idle": "#2b3d2f",

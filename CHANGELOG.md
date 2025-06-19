@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-06-18
+
+### Added
+
+- Unicode Tab: Generate C-style #define macros for named Unicode codepoints.
+
+### Changed
+
+- Tab bar dynamically aligns to the right for RTL languages.
+- Simplified layout by removing redundant frames.
+- Cleaned up startup configuration and resource handling.
+- Updated theme application to more UI elements (labels, frames, outputs).
+
+### Fixed
+
+- UI now properly reflows with RTL alignment across all tabs.
+- Button hover/selection state now respects theme consistently after tab switching.
+- "**Check for Update**" button now works properly.
+
 ## [1.0.1] - 2025-06-17
 
 ### Fixed

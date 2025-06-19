@@ -4,6 +4,7 @@ from enum import Enum
 from collections import Counter
 from imfont_compressor.core.utils import get_resource_path
 
+
 class TextAlignment(Enum):
     LTR = "ltr"
     RTL = "rtl"
@@ -33,19 +34,10 @@ class Component:
     def __repr__(self):
         return f"Component(key={self.key!r}, value={self.value!r})"
 
-    def format(self, *args):
-        try:
-            if args:
-                formatted_value = self.value % args if len(args) > 1 else self.value % args[0]
-            else:
-                formatted_value = self.value
-            return Component(self.key, formatted_value)
-        except Exception as e:
-            print(f"[Component] Formatting error for key '{self.key}': {e}")
-            return self
-
 
 class Language:
+    fallback_language = None
+
     def __init__(self, app, lang_code="en_us", localization_dir=None):
         self.app = app
         self.lang_code = lang_code
@@ -68,6 +60,9 @@ class Language:
             with open(path, "r", encoding="utf-8") as file:
                 data = json.load(file)
 
+            if lang_code == "en_us":
+                Language.fallback_language = data.get("translations", {})
+
             self.language_name = data.get("name", lang_code)
             self.translations = data.get("translations", {})
             self.alignment = TextAlignment.from_string(data.get("alignment", "ltr"))
@@ -85,25 +80,28 @@ class Language:
         if not isinstance(key, str):
             raise TypeError("get() expects a string key")
 
-        fallback = f"[{key}]"
-        raw_value = self.translations.get(key, fallback)
+        fallback_text = f"[{key}]"
+        raw_value = self.translations.get(key)
 
-        if args:
-            formatted_args = []
-            for a in args:
-                if isinstance(a, Component):
-                    formatted_args.append(str(a))
-                elif isinstance(a, str):
-                    formatted_args.append(a)
+        if raw_value is None and Language.fallback_language:
+            raw_value = Language.fallback_language.get(key)
+
+        if raw_value is None:
+            raw_value = fallback_text
+
+        try:
+            formatted_args = [str(a) if isinstance(a, Component) else a for a in args]
+
+            if '%' in raw_value:
+                if len(formatted_args) == 1:
+                    raw_value = raw_value % formatted_args[0]
                 else:
-                    raise TypeError(f"Formatting arguments must be str or Component, got {type(a)}")
+                    raw_value = raw_value % tuple(formatted_args)
 
-            try:
-                raw_value = raw_value % tuple(formatted_args) if len(formatted_args) > 1 else raw_value % formatted_args[0]
-            except Exception as e:
-                print(f"[Language] Formatting error for key '{key}': {e}")
+        except Exception:
+            pass
 
-        return Component(key, raw_value)
+        return raw_value
 
     def set_language(self, lang_code, ignore=False):
         self.lang_code = lang_code

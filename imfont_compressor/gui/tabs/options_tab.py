@@ -10,16 +10,16 @@ from imfont_compressor import CURRENT_VERSION, AUTHOR
 from PIL import Image, ImageTk
 
 class OptionsTab:
-    def __init__(self, app: ImFontCompressorApp, notebook):
+    def __init__(self, app: ImFontCompressorApp, container):
         self.app = app
-        self.notebook = notebook
+        self.container = container
         self._create_tab()
         self._setup_language_and_theme_section()
         self._setup_about_content()
 
     def _create_tab(self):
-        self.frame = tk.Frame(self.notebook)
-        self.notebook.add(self.frame, text=self.app.language.get("tab.options"))
+        self.frame = tk.Frame(self.container, bd=2, relief="ridge")
+        self.container.add(self.frame, text=self.app.language.get("tab.options"))
 
         try:
             original = Image.open(get_resource_path("assets/logo.png"))
@@ -29,15 +29,10 @@ class OptionsTab:
 
             outline_frame = tk.Frame(
                 self.frame,
-                highlightbackground="black",
-                highlightthickness=2,
-                bd=0,
-                relief="flat",
                 width=104,
                 height=104
             )
-            outline_frame.place(relx=0.5, rely=0.49, anchor="center")
-            self.app.ui_theme.set_theme_color(outline_frame, highlightbackground=ColorKeys.BG_CHILD_FRAME)
+            outline_frame.place(relx=0.5, rely=0.5, anchor="center")
 
             bg_label = tk.Label(outline_frame, image=self.bg_photo, borderwidth=0)
             bg_label.place(relx=0.5, rely=0.5, anchor="center")
@@ -54,7 +49,7 @@ class OptionsTab:
         # === Row Container Frame ===
         row_frame = tk.Frame(self.frame, bd=2, relief="ridge")
         row_frame.pack(padx=self.app.pad_x, pady=self.app.pad_y + 4, anchor="center")
-        self.app.ui_theme.set_theme_color(row_frame, bg=ColorKeys.BG_CHILD_FRAME)
+        self.app.ui_theme.apply_colors(row_frame, bg=ColorKeys.BG_CHILD_FRAME)
 
         # === Language Section ===
         lang_frame = tk.Frame(row_frame, bd=2, relief="sunken")
@@ -131,7 +126,7 @@ class OptionsTab:
         # Version Label
         version = tk.Label(
             container,
-            text=self.app.language.get("options.label.build").format(CURRENT_VERSION),
+            text=self.app.language.get("options.label.build", CURRENT_VERSION),
             justify="center"
         )
         version.grid(row=0, column=1, sticky="ew")
@@ -139,7 +134,7 @@ class OptionsTab:
         # Credits Label
         credits = tk.Label(
             container,
-            text=self.app.language.get("options.label.credits").format(AUTHOR),
+            text=self.app.language.get("options.label.credits", AUTHOR),
             justify="center"
         )
         credits.grid(row=1, column=1, sticky="ew", pady=(0, self.app.pad_y))
@@ -166,12 +161,12 @@ class OptionsTab:
         discord_btn.grid(row=2, column=0, sticky="ew", padx=(0, self.app.pad_x))
 
         # Update Button
-        update_btn = styled_button(
+        self.app.update_btn = styled_button(
             self.app, container, self.app.language.get("options.button.check_for_updates"),
             lambda: events.check_and_notify_update(self.app),
             width=16
         )
-        update_btn.grid(row=2, column=1, sticky="ew")
+        self.app.update_btn.grid(row=2, column=1, sticky="ew")
 
         # GitHub Button
         github_btn = styled_button(
